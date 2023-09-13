@@ -3,6 +3,8 @@ package uz.turgunboyevjurabek.notificationexperience
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -23,12 +25,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun builderNotification(){
+        val intent=Intent(this,MainActivity::class.java)
+        val pendingIntent= PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_MUTABLE)
+
         val builder = NotificationCompat.Builder(this, "channelId")
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle("Second Notification ")
             .setContentText("Assalom alekum")
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+
         val notification=builder.build()
         createNotificationChannel()
+
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(1,notification)
     }
